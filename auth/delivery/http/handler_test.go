@@ -3,12 +3,13 @@ package http
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
-	"github.com/zhashkevych/go-clean-architecture/auth/usecase"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gin-gonic/gin"
+	"github.com/mutahirlatif/go-clean-architecture/auth/usecase"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSignUp(t *testing.T) {

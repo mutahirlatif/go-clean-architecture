@@ -2,9 +2,10 @@ package localstorage
 
 import (
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/models"
 	"sync"
+
+	"github.com/mutahirlatif/go-clean-architecture/auth"
+	"github.com/mutahirlatif/go-clean-architecture/models"
 )
 
 type UserLocalStorage struct {

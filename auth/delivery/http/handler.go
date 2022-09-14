@@ -1,9 +1,10 @@
 package http
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/zhashkevych/go-clean-architecture/auth"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/mutahirlatif/go-clean-architecture/auth"
 )
 
 type Handler struct {

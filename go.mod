@@ -1,4 +1,4 @@
-module github.com/zhashkevych/go-clean-architecture
+module github.com/mutahirlatif/go-clean-architecture
 
 go 1.13
 

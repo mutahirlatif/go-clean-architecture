@@ -2,25 +2,26 @@ package server
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
 
-	"github.com/zhashkevych/go-clean-architecture/auth"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
-	authhttp "github.com/zhashkevych/go-clean-architecture/auth/delivery/http"
-	authmongo "github.com/zhashkevych/go-clean-architecture/auth/repository/mongo"
-	authusecase "github.com/zhashkevych/go-clean-architecture/auth/usecase"
-	bmhttp "github.com/zhashkevych/go-clean-architecture/bookmark/delivery/http"
-	bmmongo "github.com/zhashkevych/go-clean-architecture/bookmark/repository/mongo"
-	bmusecase "github.com/zhashkevych/go-clean-architecture/bookmark/usecase"
+	"github.com/mutahirlatif/go-clean-architecture/auth"
+	"github.com/mutahirlatif/go-clean-architecture/bookmark"
+
+	authhttp "github.com/mutahirlatif/go-clean-architecture/auth/delivery/http"
+	authmongo "github.com/mutahirlatif/go-clean-architecture/auth/repository/mongo"
+	authusecase "github.com/mutahirlatif/go-clean-architecture/auth/usecase"
+	bmhttp "github.com/mutahirlatif/go-clean-architecture/bookmark/delivery/http"
+	bmmongo "github.com/mutahirlatif/go-clean-architecture/bookmark/repository/mongo"
+	bmusecase "github.com/mutahirlatif/go-clean-architecture/bookmark/usecase"
 )
 
 type App struct {

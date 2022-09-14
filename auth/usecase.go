@@ -2,7 +2,8 @@ package auth
 
 import (
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/models"
+
+	"github.com/mutahirlatif/go-clean-architecture/models"
 )
 
 const CtxUserKey = "user"

@@ -1,7 +1,7 @@
 # Go Clean Architecture
 Example that shows core principles of the Clean Architecture in Golang projects.
 
-## <a href="https://www.zhashkevych.com/clean-architecture">Blog Post</a>
+## <a href="https://www.mutahirlatif.com/clean-architecture">Blog Post</a>
 
 ## Rules of Clean Architecture by Uncle Bob:
 - Independent of Frameworks. The architecture does not depend on the existence of some library of feature laden software. This allows you to use such frameworks as tools, rather than having to cram your system into their limited constraints.
@@ -64,7 +64,7 @@ Creates new bookmark
 ##### Example Input: 
 ```
 {
-	"url": "https://github.com/zhashkevych/go-clean-architecture",
+	"url": "https://github.com/mutahirlatif/go-clean-architecture",
 	"title": "Go Clean Architecture example"
 } 
 ```
@@ -79,7 +79,7 @@ Returns all user bookmarks
 	"bookmarks": [
             {
                 "id": "5da2d8aae9b63715ddfae856",
-                "url": "https://github.com/zhashkevych/go-clean-architecture",
+                "url": "https://github.com/mutahirlatif/go-clean-architecture",
                 "title": "Go Clean Architecture example"
             }
     ]

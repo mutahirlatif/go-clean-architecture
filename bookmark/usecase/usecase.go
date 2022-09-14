@@ -2,8 +2,9 @@ package usecase
 
 import (
 	"context"
-	"github.com/zhashkevych/go-clean-architecture/bookmark"
-	"github.com/zhashkevych/go-clean-architecture/models"
+
+	"github.com/mutahirlatif/go-clean-architecture/bookmark"
+	"github.com/mutahirlatif/go-clean-architecture/models"
 )
 
 type BookmarkUseCase struct {
