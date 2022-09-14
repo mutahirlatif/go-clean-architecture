@@ -19,12 +19,12 @@ func NewTaskUseCase(taskRepo task.Repository) *TaskUseCase {
 }
 
 func (t TaskUseCase) CreateTask(ctx context.Context, user *models.User, taskDetails string, dueDate time.Time) error {
-	bm := &models.Task{
+	tm := &models.Task{
 		TaskDetail: taskDetails,
 		DueDate:    dueDate,
 	}
 
-	return t.taskRepo.CreateTask(ctx, user, bm)
+	return t.taskRepo.CreateTask(ctx, user, tm)
 }
 
 func (t TaskUseCase) GetTasks(ctx context.Context, user *models.User) ([]*models.Task, error) {
@@ -33,4 +33,16 @@ func (t TaskUseCase) GetTasks(ctx context.Context, user *models.User) ([]*models
 
 func (t TaskUseCase) DeleteTask(ctx context.Context, user *models.User, id string) error {
 	return t.taskRepo.DeleteTask(ctx, user, id)
+}
+
+func (t TaskUseCase) GetTaskByID(ctx context.Context, user *models.User, id string) (*models.Task, error) {
+	return t.taskRepo.GetTaskByID(ctx, user, id)
+}
+
+func (t TaskUseCase) UpdateTask(ctx context.Context, user *models.User, taskDetails string, dueDate time.Time, id string) error {
+	tm := &models.Task{
+		TaskDetail: taskDetails,
+		DueDate:    dueDate,
+	}
+	return t.taskRepo.UpdateTask(ctx, user, tm, id)
 }

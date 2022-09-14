@@ -66,6 +66,33 @@ func (h *Handler) Get(c *gin.Context) {
 	})
 }
 
+type updateInput struct {
+	ID         string    `json:"id"`
+	TaskDetail string    `json:"taskDetail"`
+	DueDate    time.Time `json:"dueDate"`
+}
+
+func (h *Handler) Put(c *gin.Context) {
+	inp := new(updateInput)
+	if err := c.BindJSON(inp); err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	user := c.MustGet(auth.CtxUserKey).(*models.User)
+	if _, err := h.useCase.GetTaskByID(c.Request.Context(), user, inp.ID); err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	if err := h.useCase.UpdateTask(c.Request.Context(), user, inp.TaskDetail, inp.DueDate, inp.ID); err != nil {
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
 type deleteInput struct {
 	ID string `json:"id"`
 }

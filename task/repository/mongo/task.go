@@ -70,6 +70,33 @@ func (r TaskRepository) GetTasks(ctx context.Context, user *models.User) ([]*mod
 	return toTasks(out), nil
 }
 
+func (r TaskRepository) GetTaskByID(ctx context.Context, user *models.User, id string) (*models.Task, error) {
+	objID, _ := primitive.ObjectIDFromHex(id)
+	uID, _ := primitive.ObjectIDFromHex(user.ID)
+	out := new(Task)
+	err := r.db.FindOne(ctx, bson.M{"_id": objID, "userId": uID}).Decode(out)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return toTask(out), nil
+}
+
+func (r TaskRepository) UpdateTask(ctx context.Context, user *models.User, tm *models.Task, id string) error {
+	objID, _ := primitive.ObjectIDFromHex(id)
+	uID, _ := primitive.ObjectIDFromHex(user.ID)
+	tm.UserID = user.ID
+	model := toModel(tm)
+
+	_, err := r.db.ReplaceOne(ctx, bson.M{"_id": objID, "userId": uID}, model)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r TaskRepository) DeleteTask(ctx context.Context, user *models.User, id string) error {
 	objID, _ := primitive.ObjectIDFromHex(id)
 	uID, _ := primitive.ObjectIDFromHex(user.ID)

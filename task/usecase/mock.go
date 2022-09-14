@@ -29,3 +29,15 @@ func (m TaskUseCaseMock) DeleteTask(ctx context.Context, user *models.User, id s
 
 	return args.Error(0)
 }
+
+func (m TaskUseCaseMock) GetTaskByID(ctx context.Context, user *models.User, id string) (*models.Task, error) {
+	args := m.Called(user, id)
+
+	return args.Get(0).(*models.Task), args.Error(1)
+}
+
+func (m TaskUseCaseMock) UpdateTask(ctx context.Context, user *models.User, taskDetails string, dueDate time.Time, id string) error {
+	args := m.Called(user, taskDetails, dueDate, id)
+
+	return args.Error(0)
+}

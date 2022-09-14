@@ -8,10 +8,11 @@ import (
 func RegisterHTTPEndpoints(router *gin.RouterGroup, uc task.UseCase) {
 	h := NewHandler(uc)
 
-	bookmarks := router.Group("/tasks")
+	tasks := router.Group("/tasks")
 	{
-		bookmarks.POST("", h.Create)
-		bookmarks.GET("", h.Get)
-		bookmarks.DELETE("", h.Delete)
+		tasks.POST("", h.Create)
+		tasks.GET("", h.Get)
+		tasks.DELETE("", h.Delete)
+		tasks.PUT("", h.Put)
 	}
 }

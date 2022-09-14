@@ -116,3 +116,36 @@ func TestDelete(t *testing.T) {
 
 	assert.Equal(t, 200, w.Code)
 }
+
+func TestUpdate(t *testing.T) {
+	testUser := &models.User{
+		Username: "testuser",
+		Password: "testpass",
+	}
+
+	r := gin.Default()
+	group := r.Group("/api", func(c *gin.Context) {
+		c.Set(auth.CtxUserKey, testUser)
+	})
+
+	uc := new(usecase.TaskUseCaseMock)
+
+	RegisterHTTPEndpoints(group, uc)
+
+	inp := &updateInput{
+		ID:         "id",
+		TaskDetail: "taskDetail",
+		DueDate:    time.Now(),
+	}
+
+	body, err := json.Marshal(inp)
+	assert.NoError(t, err)
+
+	uc.On("UpdateTask", testUser, inp.TaskDetail, inp.DueDate, inp.ID).Return(nil)
+
+	w := httptest.NewRecorder()
+	req, _ := http.NewRequest("PUT", "/api/tasks", bytes.NewBuffer(body))
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, 200, w.Code)
+}
