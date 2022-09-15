@@ -17,10 +17,15 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/mutahirlatif/go-clean-architecture/auth"
+	"github.com/mutahirlatif/go-clean-architecture/task"
 
 	authhttp "github.com/mutahirlatif/go-clean-architecture/auth/delivery/http"
 	authpostgres "github.com/mutahirlatif/go-clean-architecture/auth/repository/postgres"
 	authusecase "github.com/mutahirlatif/go-clean-architecture/auth/usecase"
+
+	thttp "github.com/mutahirlatif/go-clean-architecture/task/delivery/http"
+	tpostgres "github.com/mutahirlatif/go-clean-architecture/task/repository/postgres"
+	tusecase "github.com/mutahirlatif/go-clean-architecture/task/usecase"
 )
 
 type App struct {
@@ -28,7 +33,7 @@ type App struct {
 
 	// bookmarkUC bookmark.UseCase
 	authUC auth.UseCase
-	// taskUC     task.UseCase
+	taskUC task.UseCase
 }
 
 func NewApp() *App {
@@ -38,6 +43,7 @@ func NewApp() *App {
 	// bookmarkRepo := bmmongo.NewBookmarkRepository(db, viper.GetString("mongo.bookmark_collection"))
 	// taskRepo := tmongo.NewTaskRepository(db, viper.GetString("mongo.task_collection"))
 	userRepo := authpostgres.NewUserRepository(db, viper.GetString("mongo.user_collection"))
+	taskRepo := tpostgres.NewTaskRepository(db, viper.GetString("mongo.user_collection"))
 
 	return &App{
 		// bookmarkUC: bmusecase.NewBookmarkUseCase(bookmarkRepo),
@@ -47,7 +53,7 @@ func NewApp() *App {
 			[]byte(viper.GetString("auth.signing_key")),
 			viper.GetDuration("auth.token_ttl"),
 		),
-		// taskUC: tusecase.NewTaskUseCase(taskRepo),
+		taskUC: tusecase.NewTaskUseCase(taskRepo),
 	}
 }
 
@@ -65,10 +71,9 @@ func (a *App) Run(port string) error {
 
 	// API endpoints
 	authMiddleware := authhttp.NewAuthMiddleware(a.authUC)
-	// api := router.Group("/api", authMiddleware)
-	router.Group("/api", authMiddleware)
+	api := router.Group("/api", authMiddleware)
 	// bmhttp.RegisterHTTPEndpoints(api, a.bookmarkUC)
-	// thttp.RegisterHTTPEndpoints(api, a.taskUC)
+	thttp.RegisterHTTPEndpoints(api, a.taskUC)
 
 	// HTTP Server
 	a.httpServer = &http.Server{

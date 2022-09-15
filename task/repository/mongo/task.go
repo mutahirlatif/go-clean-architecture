@@ -55,13 +55,13 @@ func (r TaskRepository) GetTasks(ctx context.Context, user *models.User) ([]*mod
 	out := make([]*Task, 0)
 
 	for cur.Next(ctx) {
-		user := new(Task)
-		err := cur.Decode(user)
+		task := new(Task)
+		err := cur.Decode(task)
 		if err != nil {
 			return nil, err
 		}
 
-		out = append(out, user)
+		out = append(out, task)
 	}
 	if err := cur.Err(); err != nil {
 		return nil, err
