@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#curl -X POST http://localhost:8000/auth/sign-up    -H 'Content-Type: application/json'   -d '{"username":"UncleBob","password":"cleanArch"}'
 TOKEN=$(curl -s -X POST http://localhost:8000/auth/sign-in   -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"username":"UncleBob","password":"cleanArch"}' | jq -r '.token')
 
 #curl -X POST http://localhost:8000//api/bookmarks    -H 'Content-Type: application/json' -H "Authorization: Bearer ${TOKEN}"  -d '{"url": "https://github.com/zhashkevych/go-clean-architecture","title": "Go Clean Architecture example"}'
