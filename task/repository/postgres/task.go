@@ -11,7 +11,7 @@ import (
 )
 
 type Task struct {
-	ID         int `gorm:"primary_key;auto_increment"`
+	ID         int `gorm:"primary_key;auto_increment;<-:create"`
 	UserID     int
 	TaskDetail string `gorm:"size:255;"`
 	DueDate    time.Time
@@ -41,56 +41,58 @@ func (r TaskRepository) CreateTask(ctx context.Context, user *models.User, tm *m
 
 func (r TaskRepository) GetTasks(ctx context.Context, user *models.User) ([]*models.Task, error) {
 	//Task := new(Task)
-	uid, _ := strconv.Atoi(user.ID)
+	uID, _ := strconv.Atoi(user.ID)
 	tasks := []Task{}
-	var err = r.db.Debug().Model(Task{}).Where("user_id = ?", uid).First(&tasks).Error
+	var err = r.db.Debug().Model(Task{}).Where("user_id = ?", uID).Find(&tasks).Error
 	if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
 		return nil, err
 	}
 
-	out := make([]*Task, 0)
-
-	for _, t := range tasks {
-		out = append(out, &t)
-	}
-	return toTasks(out), nil
+	return toTasks(tasks), nil
 
 }
 
 func (r TaskRepository) GetTaskByID(ctx context.Context, user *models.User, id string) (*models.Task, error) {
-	// objID, _ := primitive.ObjectIDFromHex(id)
-	// uID, _ := primitive.ObjectIDFromHex(user.ID)
-	// out := new(Task)
-	// err := r.db.FindOne(ctx, bson.M{"_id": objID, "userId": uID}).Decode(out)
+	objID, _ := strconv.Atoi(id)
+	uID, _ := strconv.Atoi(user.ID)
 
-	// if err != nil {
-	// 	return nil, err
-	// }
+	task := Task{}
+	var err = r.db.Debug().Model(Task{}).Where("user_id = ? AND id = ?", uID, objID).First(&task).Error
+	if err != nil {
+		return nil, err
+	}
 
-	// return toTask(out), nil
-	return nil, nil
+	return toTask(&task), nil
+
 }
 
 func (r TaskRepository) UpdateTask(ctx context.Context, user *models.User, tm *models.Task, id string) error {
-	// objID, _ := primitive.ObjectIDFromHex(id)
-	// uID, _ := primitive.ObjectIDFromHex(user.ID)
-	// tm.UserID = user.ID
-	// model := toModel(tm)
+	objID, _ := strconv.Atoi(id)
+	uID, _ := strconv.Atoi(user.ID)
 
-	// _, err := r.db.ReplaceOne(ctx, bson.M{"_id": objID, "userId": uID}, model)
-	// if err != nil {
-	// 	return err
-	// }
+	task := Task{}
+	var err = r.db.Debug().Model(Task{}).Where("user_id = ? AND id = ?", uID, objID).First(&task).Error
+	if err != nil {
+		return err
+	}
 
-	return nil
+	task.TaskDetail = tm.TaskDetail
+	task.DueDate = tm.DueDate
+
+	return r.db.Debug().Model(&task).Save(&task).Error
 }
 
 func (r TaskRepository) DeleteTask(ctx context.Context, user *models.User, id string) error {
-	// objID, _ := primitive.ObjectIDFromHex(id)
-	// uID, _ := primitive.ObjectIDFromHex(user.ID)
+	objID, _ := strconv.Atoi(id)
+	uID, _ := strconv.Atoi(user.ID)
 
-	// _, err := r.db.DeleteOne(ctx, bson.M{"_id": objID, "userId": uID})
-	// return err
+	task := Task{}
+	var err = r.db.Debug().Model(Task{}).Where("user_id = ? AND id = ?", uID, objID).First(&task).Error
+	if err != nil {
+		return err
+	}
+
+	r.db.Debug().Model(&task).Delete(&task)
 	return nil
 }
 
@@ -116,12 +118,11 @@ func toTask(t *Task) *models.Task {
 	}
 }
 
-func toTasks(bs []*Task) []*models.Task {
-	out := make([]*models.Task, len(bs))
+func toTasks(ts []Task) []*models.Task {
+	out := make([]*models.Task, len(ts))
 
-	for i, b := range bs {
-		out[i] = toTask(b)
+	for i, t := range ts {
+		out[i] = toTask(&t)
 	}
-
 	return out
 }
