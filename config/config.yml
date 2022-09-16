@@ -13,7 +13,7 @@ mongo:
   task_collection: "tasks"
 
 postgres:
-  uri: "postgres://pg:pass@localhost:5432/crud"
+  uri: "postgres://pg:pass@postgresdb:5432/crud"
   name: "testdb"
   user_collection: "users"
   bookmark_collection: "bookmarks"
