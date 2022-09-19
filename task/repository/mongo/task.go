@@ -46,11 +46,11 @@ func (r TaskRepository) GetTasks(ctx context.Context, user *models.User) ([]*mod
 	cur, err := r.db.Find(ctx, bson.M{
 		"userId": uid,
 	})
-	defer cur.Close(ctx)
 
 	if err != nil {
 		return nil, err
 	}
+	defer cur.Close(ctx)
 
 	out := make([]*Task, 0)
 

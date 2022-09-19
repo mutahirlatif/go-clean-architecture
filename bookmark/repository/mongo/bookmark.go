@@ -45,11 +45,11 @@ func (r BookmarkRepository) GetBookmarks(ctx context.Context, user *models.User)
 	cur, err := r.db.Find(ctx, bson.M{
 		"userId": uid,
 	})
-	defer cur.Close(ctx)
 
 	if err != nil {
 		return nil, err
 	}
+	defer cur.Close(ctx)
 
 	out := make([]*Bookmark, 0)
 
